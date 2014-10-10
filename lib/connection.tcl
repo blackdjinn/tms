@@ -85,5 +85,4 @@ oo::class create connection {
 }
 package provide connection 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
-   pkg_mkIndex -verbose [file dirn [info scr]] [file tail [info scr]]
 }

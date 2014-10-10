@@ -12,10 +12,10 @@ package require handlers
 
 oo::class create server {
    constructor {serverport connecthandler} {
-      my variable channel
-      my variable port
-      my variable active
-      my variable handler
+   my variable channel
+   my variable port
+   my variable active
+   my variable handler
       set port $serverport
       set handler $connecthandler
       set active True
@@ -23,12 +23,12 @@ oo::class create server {
       puts "Server up. Listening on $port"
    }
    destructor {
-      my variable channel
+   my variable channel
       close $channel
    }
 # Methods.
    method newconnect {chanid clientaddr clientport} {
-      my variable handler
+   my variable handler
       set incoming [connection new $chanid $clientaddr $clientport]
       eval [list $handler newconnect $incoming]
       return $incoming
