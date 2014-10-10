@@ -15,17 +15,8 @@ set libdir "/home/ryan/src/tms/lib"
 lappend auto_path $libdir
 package require TclOO
 
-package require connection
+package require server
+package require loginshell
 
-set pendingconnects {}
-set forever 0
-set characters(.connectcount) 0
-
-proc newconnection {chanid clientaddr clientport} {
-   global pendingconnects
-   lappend pendingconnects [connection new $chanid $clientaddr $clientport]
-}
-
-socket -server newconnection $serverport
-puts "Listening on $serverport"
+set thisserver [server new $serverport [loginshell new]]
 vwait forever
