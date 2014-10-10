@@ -12,9 +12,10 @@ set libdir "/home/ryan/src/tms/lib"
 #
 # End of configuration. Don't change below here.
 #
+lappend auto_path $libdir
 package require TclOO
 
-source [file join $libdir "connection.tcl"]
+package require connection
 
 set pendingconnects {}
 set forever 0
