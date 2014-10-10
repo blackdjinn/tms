@@ -44,6 +44,10 @@ oo::class create connection {
       set tag $newtag
       return $tag
    }
+   method owner {obj} {
+      my variable owner
+      set owner $obj
+   }
 # I/O
    method echo {str} {
    # Send string argument to client
@@ -74,10 +78,10 @@ oo::class create connection {
    }
    method newline {} {
    # triggered on readable input
-   # Currently a stup to simply echo.
-      my echo [my readline]
+   my variable owner
+      $owner parse [self] [my readline]
    }
-   export echo address port active tag settag
+   export echo address port active tag settag export owner
 }
 package provide connection 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {

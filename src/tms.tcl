@@ -16,7 +16,7 @@ lappend auto_path $libdir
 package require TclOO
 
 package require server
-package require loginshell
+package require handlers
 
 set thisserver [server new $serverport [loginshell new]]
 vwait forever

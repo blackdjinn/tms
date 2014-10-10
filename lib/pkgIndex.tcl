@@ -10,3 +10,4 @@
 
 package ifneeded connection 0 [list source [file join $dir connection.tcl]]
 package ifneeded server 0 [list source [file join $dir server.tcl]]
+package ifneeded handlers 0 [list source [file join $dir handlers.tcl]]
