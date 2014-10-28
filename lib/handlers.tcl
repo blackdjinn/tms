@@ -1,13 +1,13 @@
 #!/bin/false
 # This shouldn't be invoked as a command, so it is set up to fail.
 #
-# Class definition for 'server' which contains the basic wrapping
-# for keeping a server port open and creating clients
+# Handlers for connections. It includes the basic communication logic.
 #
 # (C) 2014 Ryan Davis.
 #
 package require TclOO
 package require connection
+# package require characters
 
 oo::class create handler {
    constructor {} {
@@ -35,9 +35,46 @@ oo::class create handler {
       # Stub implimentation, just echos.
       $obj echo $str
    }
+   method remove {con} {
+      my variable channels
+      set idx [lsearch -exact $channels $con]
+      set channels [lreplace $channels $idx $idx]
+   }
+   method disconnect {con} {
+      [self] remove $con
+      $con destroy
+   }
 }
 
 oo::class create loginshell {
+   superclass handler
+   method parse {obj str} {
+      set firstword ""
+      scan $str "%s" firstword
+      switch -nocase $firstword {
+         who {}
+         quit {
+            $obj echo "Goodbye."
+            my disconnect $obj
+         }
+         connect {
+            my handoff $obj $name
+         }
+         help {
+            $obj echo "Help: Valid commands:"
+            $obj echo "  help           Print this message"
+            $obj echo "  who            List people connected"
+            $obj echo "  quit           disconnect"
+            $obj echo "  connect name   connect as 'name'"
+         }
+         default {
+            $obj echo "Command not understood. Type 'help' for assistance."
+         }
+      }
+   }
+}
+
+oo::class create chatshell {
    superclass handler
 }
 

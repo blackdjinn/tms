@@ -18,5 +18,7 @@ package require TclOO
 package require server
 package require handlers
 
-set thisserver [server new $serverport [loginshell new]]
+set loginhandler [loginshell new]
+
+set thisserver [server new $serverport $loginhandler]
 vwait forever

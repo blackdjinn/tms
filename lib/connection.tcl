@@ -29,8 +29,10 @@ oo::class create connection {
    }
    destructor {
       my variable channel
+      my variable tag
       fileevent $channel readable {}
       close $channel
+      puts "$tag ! disconnected"
    }
 # Getter methods
    method channel {} { my variable channel ; return $channel }
@@ -73,6 +75,8 @@ oo::class create connection {
             puts "$tag ! closing"
             close $channel
             set active False
+            my variable owner
+            $owner disconnect [self]
          }
       } { return "" }
    }
