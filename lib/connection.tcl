@@ -16,15 +16,19 @@ oo::class create connection {
       my variable active
       my variable tag
       my variable parent
+      my variable atime
+      my variable ctime
       set parent nil
       set channel $chanid
       set address $clientaddress
       set port $clientport
       set active True
       set tag "$address:$port"
+      set atime [clock seconds]
+      set ctime [clock seconds]
       fconfigure $channel -blocking False -buffering line -translation auto
       fileevent $channel readable [list [self] newline ]
-      puts "$tag ! connected"
+      # puts "$tag ! connected as [self]"
       my echo "$tag ! connected"
    }
    destructor {
@@ -53,9 +57,10 @@ oo::class create connection {
 # I/O
    method echo {str} {
    # Send string argument to client
-   my variable active
    my variable channel
+   my variable active
    my variable tag
+   # puts "$tag ! echoing from [self] : $str"
       if {$active} {
          puts $channel $str
          puts "$tag > $str"
@@ -66,9 +71,11 @@ oo::class create connection {
    my variable active
    my variable channel
    my variable tag
+   my variable atime
       if {$active} {
          if {[gets $channel line] >= 0} {
             puts "$tag < $line"
+            set atime [clock seconds]
             return $line
          }
          if {[eof $channel]} {

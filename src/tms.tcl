@@ -19,6 +19,8 @@ package require server
 package require handlers
 
 set loginhandler [loginshell new]
+set chatroom [chatshell new]
+puts "loginobj: $loginhandler chatobj: $chatroom"
 
 set thisserver [server new $serverport $loginhandler]
-vwait forever
+vwait untilQuit
