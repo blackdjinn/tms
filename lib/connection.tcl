@@ -15,8 +15,8 @@ oo::class create connection {
       my variable port
       my variable active
       my variable tag
-      my variable owner
-      set owner nil
+      my variable parent
+      set parent nil
       set channel $chanid
       set address $clientaddress
       set port $clientport
@@ -46,9 +46,9 @@ oo::class create connection {
       set tag $newtag
       return $tag
    }
-   method owner {obj} {
-      my variable owner
-      set owner $obj
+   method parent {obj} {
+      my variable parent
+      set parent $obj
    }
 # I/O
    method echo {str} {
@@ -75,17 +75,17 @@ oo::class create connection {
             puts "$tag ! closing"
             close $channel
             set active False
-            my variable owner
-            $owner disconnect [self]
+            my variable parent
+            $parent disconnect [self]
          }
       } { return "" }
    }
    method newline {} {
    # triggered on readable input
-   my variable owner
-      $owner parse [self] [my readline]
+   my variable parent
+      $parent parse [self] [my readline]
    }
-   export echo address port active tag settag export owner
+   export echo address port active tag settag export parent
 }
 package provide connection 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {

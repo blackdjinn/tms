@@ -11,38 +11,44 @@ package require connection
 
 oo::class create handler {
    constructor {} {
-   my variable channels
-   my variable owner
-      set channels {}
-      set owner [self]
+   my variable children
+   my variable parent
+      set children {}
+      set parent [self]
    }
    destructor {
-   my variable channels
-      foreach x $channels {close $x}
+   my variable children
+      foreach x $children {close $x}
    }
 # Setter Methods
-   method owner {obj} {
-   my variable owner
-      set owner $obj
+   method parent {obj} {
+   my variable parent
+      set parent $obj
    }
 # Methods.
    method newconnect {newcon} {
-   my variable channels
-      lappend channels $newcon
-      $newcon owner [self]
+   my variable children
+      lappend children $newcon
+      $newcon parent [self]
    }
    method parse {obj str} {
       # Stub implimentation, just echos.
       $obj echo $str
    }
    method remove {con} {
-      my variable channels
-      set idx [lsearch -exact $channels $con]
-      set channels [lreplace $channels $idx $idx]
+      my variable children
+      set idx [lsearch -exact $children $con]
+      set children [lreplace $children $idx $idx]
    }
    method disconnect {con} {
       [self] remove $con
       $con destroy
+   }
+   method echo {str} {
+      my variable children
+      foreach c $children {
+         $c echo $str
+      }
    }
 }
 
