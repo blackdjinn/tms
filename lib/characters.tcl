@@ -13,16 +13,28 @@ oo::class create charactershell {
    constructor {con charname} {
       my variable name
       my variable atime
+      my variable ctime
       set name $charname
       set atime [clock seconds]
+      set ctime [clock seconds]
       next
       my newconnect $con
       # puts "[$con tag] ! creating $charname charctershell [self]"
    }
+# getter methods
    method name {} {
       my variable name
       return $name
    }
+   method atime {} {
+      my variable atime
+      return $atime
+   }
+   method ctime {} {
+      my variable ctime
+      return $ctime
+   }
+# More methods
    method parse {obj str} {
       #Stub that passes the buck upstairs
       my variable parent

@@ -80,11 +80,25 @@ oo::class create loginshell {
       my remove $obj
       $chatroom connect $obj $name
    }
+   method showhelp {obj} {
+      $obj echo "Help: Valid commands:"
+      $obj echo "  help                     Print this message"
+      $obj echo "  who                      List people connected"
+      $obj echo "  quit                     disconnect"
+      $obj echo "  connect name password    connect as 'name'"
+   }
+   method newconnect {obj} {
+      next $obj
+      my showhelp $obj
+   }
    method parse {obj str} {
       set firstword ""
       scan $str "%s" firstword
       switch -nocase $firstword {
-         who {}
+         who {
+            global chatroom
+            $chatroom showwho $obj
+         }
          quit {
             $obj echo "Goodbye."
             my disconnect $obj
@@ -93,11 +107,7 @@ oo::class create loginshell {
             my handoff $obj $str
          }
          help {
-            $obj echo "Help: Valid commands:"
-            $obj echo "  help                     Print this message"
-            $obj echo "  who                      List people connected"
-            $obj echo "  quit                     disconnect"
-            $obj echo "  connect name password    connect as 'name'"
+            my showhelp $obj
          }
          default {
             $obj echo "Command not understood. Type 'help' for assistance."
@@ -129,8 +139,30 @@ oo::class create chatshell {
          my newconnect [charactershell new $con $name]
       }
    }
+   method connectinfo {} {
+   my variable children
+      set outlist {}
+      foreach c $children {
+         lappend outlist [list [$c name] [$c ctime] [$c atime]]
+      }
+      return $outlist
+   }
+   method showwho {obj} {
+      set now [clock seconds]
+      $obj echo [format "%-20s %-30s %-10s" Name: Connected: Idle: ]
+puts [my connectinfo]
+      foreach {n c a} [concat [join [my connectinfo]]] {
+         set connecttime [clock format $c]
+         set idletime [clock format [expr {$now-$a}] -format "%T" -timezone UTC]
+         $obj echo [format "%-20s %-30s %-10s" $n $connecttime $idletime]
+      }
+      $obj echo "----- Done"
+   }
    method parse {obj str} {
       switch $str {
+         WHO {
+            my showwho $obj
+         }
          QUIT {
             $obj echo "Goodbye!"
             my disconnect $obj
