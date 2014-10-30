@@ -30,6 +30,11 @@ oo::class create charactershell {
       set atime [clock seconds]
       $parent parse [self] $str
    }
+   method newconnect {con} {
+   my variable name
+      $con settag "[$con tag]:$name"
+      next $con
+   }
    method disconnect {con} {
    my variable children
    my variable name
