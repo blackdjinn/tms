@@ -6,9 +6,9 @@
 # (C) 2014 Ryan Davis.
 #
 package require TclOO
-package require handlers
+package require handler
 
-oo::class create charactershell {
+oo::class create character {
    superclass handler
    constructor {con charname} {
       my variable name
@@ -21,11 +21,7 @@ oo::class create charactershell {
       my newconnect $con
       # puts "[$con tag] ! creating $charname charctershell [self]"
    }
-# getter methods
-   method name {} {
-      my variable name
-      return $name
-   }
+# Getters
    method atime {} {
       my variable atime
       return $atime
@@ -34,7 +30,11 @@ oo::class create charactershell {
       my variable ctime
       return $ctime
    }
-# More methods
+   method name {} {
+      my variable name
+      return $name
+   }
+# Other
    method parse {obj str} {
       #Stub that passes the buck upstairs
       my variable parent
@@ -59,6 +59,6 @@ oo::class create charactershell {
    }
 }
 
-package provide characters 0
+package provide character 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
 }

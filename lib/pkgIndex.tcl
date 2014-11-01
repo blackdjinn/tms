@@ -10,5 +10,7 @@
 
 package ifneeded connection 0 [list source [file join $dir connection.tcl]]
 package ifneeded server 0 [list source [file join $dir server.tcl]]
-package ifneeded handlers 0 [list source [file join $dir handlers.tcl]]
-package ifneeded characters 0 [list source [file join $dir characters.tcl]]
+package ifneeded handler 0 [list source [file join $dir handler.tcl]]
+package ifneeded loginshell 0 [list source [file join $dir loginshell.tcl]]
+package ifneeded chatshell 0 [list source [file join $dir chatshell.tcl]]
+package ifneeded character 0 [list source [file join $dir character.tcl]]

@@ -8,16 +8,16 @@
 #
 package require TclOO
 package require connection
-package require handlers
+package require handler
 
 oo::class create server {
    constructor {serverport connecthandler} {
    my variable channel
    my variable port
    my variable active
-   my variable handler
+   my variable login
       set port $serverport
-      set handler $connecthandler
+      set login $connecthandler
       set active True
       set channel [socket -server [list [self] newconnect] $port]
       puts "Server up. Listening on $port"
@@ -28,9 +28,9 @@ oo::class create server {
    }
 # Methods.
    method newconnect {chanid clientaddr clientport} {
-   my variable handler
+   my variable login
       set incoming [connection new $chanid $clientaddr $clientport]
-      eval [list $handler newconnect $incoming]
+      $login newconnect $incoming
       return $incoming
    }
 }
