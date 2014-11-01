@@ -10,6 +10,10 @@ package require connection
 package require handler
 package require character
 
+oo::class create chatchar {
+   superclass character
+}
+
 oo::class create chatshell {
    superclass handler
    method connect {con name} {
@@ -30,7 +34,7 @@ oo::class create chatshell {
          $found newconnect $con
       } {
          # puts "$tag ! Creating new chatacter $name"
-         my newconnect [character new $con $name]
+         my newconnect [chatchar new $con $name]
       }
    }
    method connectinfo {} {
