@@ -1,0 +1,39 @@
+\documentclass[10pt,letterpaper,twoside]{book}
+\author{Ryan M. Davis iconoclasmandheresy@gmail.com}
+\title{TMS manual}
+\usepackage{pxfonts}
+\begin{document}
+\pagestyle{empty}
+\maketitle
+\frontmatter
+\pagestyle{headings}
+\tableofcontents
+\listoftables
+\mainmatter
+\part{User Guide}
+\chapter{Input translation}
+\begin{table}
+\begin{tabular}{c p{'10cm'}}
+char & Description\\
+\hline
+: & Maps to ``pose rest-of-line''\\
+" & Maps to ``say rest-of-line''\\
+; & Maps to ``pose -nospace rest-of-line''\\
+\textbackslash & Maps to ``spoof rest-of-line''\\
+@ & Evaluate in connection context\\
+\# & Evaluate in location context\\
++ & Evaluate in character context (default)\\
+\hline
+\end{tabular}
+\caption{Input syntax symbols}
+\label{tab:inputsyntaxchars}
+\end{table}
+\part{Builder Guide}
+\part{Coding}
+\part{Admin Guide}
+\part{Server Internals}
+%\backmatter
+%\part{Appendix}
+%\part{Index}
+%\index
+\end{document}
