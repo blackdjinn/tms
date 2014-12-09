@@ -12,17 +12,24 @@ package require handler
 
 oo::class create loginshell {
    superclass handler
-   method handoff {obj str} {
+   method handoff {obj name} {
    # TODO: this assumes implimentation details that will go away.
-   # Rethink how this is done.
+   # Eventually, chatrooms will be created dynamically and can be joined.
    global chatroom
       set name ""
       set pass ""
       set connect ""
       scan $str "%s %s %s" connect name pass
-      # TODO: Validate password here.
-      my remove $obj
-      $chatroom connect $obj $name
+      if {my validateuser $name $pass} {
+         my remove $obj
+         $chatroom connect $obj $name
+      } {
+         $obj echo "Error: Username and/or password invalid."
+      }
+   }
+   method validateuser {name pass} {
+      # TODO stub, just returns 'true'
+      return 1
    }
    method showhelp {obj} {
       $obj echo "Help: Valid commands:"
@@ -30,6 +37,7 @@ oo::class create loginshell {
       $obj echo "  who                      List people connected"
       $obj echo "  quit                     disconnect"
       $obj echo "  connect name password    connect as 'name'"
+      #$obj echo "  create name password     create account 'name' and connect"
    }
    method newconnect {obj} {
       next $obj
@@ -49,6 +57,9 @@ oo::class create loginshell {
          }
          connect {
             my handoff $obj $str
+         }
+         create {
+            my createaccount $obj $str
          }
          help {
             my showhelp $obj

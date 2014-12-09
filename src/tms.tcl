@@ -3,16 +3,22 @@
 # (C) Copyright 2014 Ryan Davis.
 # Released to Creative Commons. See 'Licence.txt'
 
-# User configuration
-
-# Port to listen for incoming connections on
-set serverport 6543
-set libdir "/home/ryan/src/tms/lib"
+namespace eval config {
+# TODO Replace this with actual file read logic
+# Right now, this is by-hand user configuration
+   set gamedir "/home/ryan/srv/test"
+   set gamename "Test"
+   set address *
+   set port 6543
+   set greeting "files/welcome.txt"
+   set chatmotd "files/motd.txt"
+   set libdir "/home/ryan/src/tms/lib"
+}
 
 #
 # End of configuration. Don't change below here.
 #
-lappend auto_path $libdir
+lappend auto_path $::config::libdir
 package require TclOO
 
 package require server
@@ -23,5 +29,5 @@ set loginhandler [loginshell new]
 set chatroom [chatshell new]
 puts "loginobj: $loginhandler chatobj: $chatroom"
 
-set thisserver [server new $serverport $loginhandler]
+set thisserver [server new $::config::port $loginhandler]
 vwait untilQuit
