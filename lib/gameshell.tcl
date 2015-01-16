@@ -61,7 +61,6 @@ oo::class create gameshell {
    method showwho {obj} {
       set now [clock seconds]
       $obj echo [format "%-20s %-30s %-10s" Name: Connected: Idle: ]
-puts [my connectinfo]
       foreach {n c a} [concat [join [my connectinfo]]] {
          set connecttime [clock format $c]
          set idletime [clock format [expr {$now-$a}] -format "%T" -timezone UTC]
@@ -75,6 +74,7 @@ puts [my connectinfo]
       if {0== [catch "[$obj interpreter] eval $str" result ovn]} {
          $obj echo $result
       } {
+         # TODO: Parse this out for better reading
          $obj echo "Error: $result"
          $obj echo "----"
          $obj echo $ovn
