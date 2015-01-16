@@ -24,10 +24,12 @@ package require TclOO
 package require server
 package require loginshell
 package require chatshell
+package require gameshell
 
 set loginhandler [loginshell new]
 set chatroom [chatshell new]
-puts "loginobj: $loginhandler chatobj: $chatroom"
+set game [gameshell new]
+puts "loginobj: $loginhandler chatobj: $chatroom game: $game"
 
 set thisserver [server new $::config::port $loginhandler]
 vwait untilQuit

@@ -1,7 +1,8 @@
 #!/bin/false
 # This shouldn't be invoked as a command, so it is set up to fail.
 #
-# Handlers for connections. It includes the basic communication logic.
+# This is the 'login' shell. It handles user validation, some basic
+# game-state queries and handing off to other shells.
 #
 # (C) 2014 Ryan Davis.
 #
@@ -12,22 +13,21 @@ package require handler
 
 oo::class create loginshell {
    superclass handler
-   method handoff {obj name} {
+   method handoffChat {obj name} {
    # TODO: this assumes implimentation details that will go away.
    # Eventually, chatrooms will be created dynamically and can be joined.
    global chatroom
-      set name ""
-      set pass ""
-      set connect ""
-      scan $str "%s %s %s" connect name pass
-      if {my validateuser $name $pass} {
-         my remove $obj
-         $chatroom connect $obj $name
-      } {
-         $obj echo "Error: Username and/or password invalid."
-      }
+      my remove $obj
+      $chatroom connect $obj $name
    }
-   method validateuser {name pass} {
+   method handoffGame {obj name} {
+   # TODO: this assumes implimentation details that will go away.
+   # Eventually, multiple games may be run on the same server.
+   global game
+      my remove $obj
+      $game connect $obj $name
+   }
+   method validateuser {type name pass} {
       # TODO stub, just returns 'true'
       return 1
    }
@@ -36,7 +36,8 @@ oo::class create loginshell {
       $obj echo "  help                     Print this message"
       $obj echo "  who                      List people connected"
       $obj echo "  quit                     disconnect"
-      $obj echo "  connect name password    connect as 'name'"
+      $obj echo "  chat name password       join global chat as 'name'"
+      $obj echo "  connect name password    join global game as 'name'"
       #$obj echo "  create name password     create account 'name' and connect"
    }
    method newconnect {obj} {
@@ -48,6 +49,7 @@ oo::class create loginshell {
       scan $str "%s" firstword
       switch -nocase $firstword {
          who {
+            # TODO: this only queries a single global chatroom. Change.
             global chatroom
             $chatroom showwho $obj
          }
@@ -55,8 +57,27 @@ oo::class create loginshell {
             $obj echo "Goodbye."
             my disconnect $obj
          }
+         chat {
+            set name ""
+            set pass ""
+            set connect ""
+            scan $str "%s %s %s" connect name pass
+            if {[my validateuser chat $name $pass]} {
+               my handoffChat $obj $name
+            } {
+               $obj echo "Error: Username and/or password invalid."
+            }
+         }
          connect {
-            my handoff $obj $str
+            set name ""
+            set pass ""
+            set connect ""
+            scan $str "%s %s %s" connect name pass
+            if {[my validateuser game $name $pass]} {
+               my handoffGame $obj $name
+            } {
+               $obj echo "Error: Username and/or password invalid."
+            }
          }
          create {
             my createaccount $obj $str
