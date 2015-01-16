@@ -32,6 +32,44 @@ char & Description\\
 \part{Coding}
 \part{Admin Guide}
 \part{Server Internals}
+\chapter{Concepts}
+Wherever possible, the built-in capabilities of the programming environment have been used.
+
+Tcl's event loop provides sufficient concurrency, so it is used in place of threads.
+
+The TinyMUD derived family of servers which this is designed to replace are typically augmented with a connection to a SQL server.
+Instead, TMS uses SQL as the primary persistant data store.
+The Tcl data access libraries are considered among the most robust available in resisting SQL-Injection attacks,
+a critical concern for an environment designed to allow untrusted access.
+\chapter{Structure}
+Internally, the server is constructed using n-trees of objects.
+Each node keeps a list of its children, and a pointer back up to its parent object.
+Calls can propagate up and be delegated out as needed.
+All internal nodes should be subclasses of 'handler'.
+Ultimately, most leaves should be instances of 'connection' representing individual network connections.
+
+An example of this is the 'broadcast' method.
+The inherited operation of this method is to recursively invoke 'brodcast' on the parent until the root is reached,
+The 'echo' method is then invoked which by inheritance invokes 'echo' on all the children.
+\chapter{Shells}
+A shell represents a context for parsing commands.
+A shell must impliment the 'parse' method as something more than simply handing that off to its parent.
+Each incoming line from a connection invokes the parent's 'parse' method, following the tree toward the root.
+The message propagates through the tree until it reaches a shell.
+At that point it is parsed in whatever way is context appropriate, and messages are dispatched back down the tree.
+\section{Login Shell}
+New incoming connections are assigned to an instance of loginshell.
+It can perform some simple queries, or log into a game or chatroom.
+\section{Chat Shell}
+The chatshell impliments a basic instant-message like chatroom.
+Everyone is in the same room if they are connected to this instance.
+It was created for testing but since it is small and of potential use, it remains in the system.
+\section{Game Shell}
+Where a chatshell does little more than broadcast text to various connections, the game shell does a lot more.
+Each incoming line is handed to a sandboxed safe tcl interpreter.
+It impliments a simple REPL (Read Evaluate Print Loop) in the context of that interpreter.
+From this point, the expressive power of the Tcl language can be accessed.
+A handle to a private SQL data-store is also available, with a simple hierarchical store implimented on top of it.
 %\backmatter
 %\part{Appendix}
 %\part{Index}
