@@ -26,6 +26,7 @@ oo::class create gamechar {
 
 oo::class create gameshell {
    superclass handler
+
    method connect {con name} {
       my variable children
       set found 0
@@ -47,6 +48,7 @@ oo::class create gameshell {
          my newconnect [gamechar new $con $name]
       }
    }
+
    method connectinfo {} {
    my variable children
       set outlist {}
@@ -55,6 +57,7 @@ oo::class create gameshell {
       }
       return $outlist
    }
+
    method showwho {obj} {
       set now [clock seconds]
       $obj echo [format "%-20s %-30s %-10s" Name: Connected: Idle: ]
@@ -66,15 +69,21 @@ puts [my connectinfo]
       }
       $obj echo "----- Done"
    }
+
    method parse {obj str} {
       puts "! Parsing: $str"
-      if {0== [catch [set result [interp eval [$obj interpreter] $str] rvn ovn]]} {
+      if {0== [catch "[$obj interpreter] eval $str" result ovn]} {
          $obj echo $result
       } {
-         $obj echo "Error: $rvn"
+         $obj echo "Error: $result"
+         $obj echo "----"
+         $obj echo $ovn
+         $obj echo "----"
       }
    }
+
 }
+
 
 package provide gameshell 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
