@@ -14,13 +14,25 @@ oo::class create gamechar {
    superclass character
    constructor {con charname} {
       my variable interpreter
-      set interpreter [interp create -safe]
+      set interpreter [::safe::interpCreate -noStatics]
       next $con $charname
    }
+
+   destructor {
+      my variable interpreter
+      ::safe::interpDelete $interpreter
+      next
+   }
+
    method interpreter {} {
       # Getter method
       my variable interpreter
       return $interpreter
+   }
+
+   method tag {} {
+      my variable name
+      return "char: $name"
    }
 }
 
@@ -70,7 +82,7 @@ oo::class create gameshell {
    }
 
    method parse {obj str} {
-      puts "! Parsing: $str"
+      puts "[$obj tag] ! Parsing: $str"
       if {0== [catch "[$obj interpreter] eval $str" result ovn]} {
          $obj echo $result
       } {

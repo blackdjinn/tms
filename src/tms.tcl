@@ -18,6 +18,9 @@ namespace eval config {
 #
 # End of configuration. Don't change below here.
 #
+
+# Uncomment for spammy interpreter debug messages
+# ::safe::setLogCmd puts
 lappend auto_path $::config::libdir
 package require TclOO
 
