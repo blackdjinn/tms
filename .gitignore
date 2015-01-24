@@ -110,3 +110,6 @@ sympy-plots-for-*.tex/
 
 # VIM swaps
 .*.swp
+
+# Temp files
+state.txt
