@@ -9,3 +9,6 @@ manual.pdf: manual.tex
 clean:
 	rubber --clean manual.tex
 	rubber --clean -d manual.tex
+
+preview: manual.dvi
+	xdvi manual.dvi

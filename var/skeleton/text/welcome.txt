@@ -1,0 +1,6 @@
+Welcome to TMS!
+
+This is the default welcome screen. Enter 'help' to see available commands.
+It resides at text/welcome.txt and staff is aware that it needs to be
+updated.
+

@@ -1,0 +1,3 @@
+This is text/motd.txt and should be messages displayed on a successful
+connection.
+---- end motd
