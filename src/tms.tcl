@@ -6,13 +6,14 @@
 namespace eval config {
 # TODO Replace this with actual file read logic
 # Right now, this is by-hand user configuration
-   set gamedir "/home/ryan/srv/test"
+#   set gamedir "/home/ryan/srv/test"
+   set gamedir "/home/ryan/src/tms/var/skeleton"
    set gamename "Test"
    set address *
    set port 6543
-   set greeting "files/welcome.txt"
-   set chatmotd "files/motd.txt"
-   set gamemotd "files/motd.txt"
+   set greeting "text/welcome.txt"
+   set chatmotd "text/motd.txt"
+   set gamemotd "text/motd.txt"
    set libdir "/home/ryan/src/tms/lib"
    # debug level. Bigger is spammier.
    # TODO: bitmask debug settings? Probably a good idea.

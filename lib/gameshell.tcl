@@ -1,7 +1,7 @@
 #!/bin/false
 # This shouldn't be invoked as a command, so it is set up to fail.
 #
-# Handlers for connections. It includes the basic communication logic.
+# This is the shell for anything connecte to the game as a character.
 #
 # (C) 2014 Ryan Davis.
 #
