@@ -3,12 +3,22 @@
 #
 # Class definition for 'connection' which contains the basic wrapping
 # for maintinaing a specific client connection.
+# In general, these represent the 'leaves' os the server tree.
 #
-# (C) 2014 Ryan Davis.
+# (C) 2014, 2015 Ryan Davis.
 #
 package require TclOO
 
 oo::class create connection {
+# Variables:
+# channel -- the locical IO channel associated with the connection
+# address -- foreign IP address associated with the connection.
+# port -- Foreign IP port.
+# active -- It it alive?
+# tag -- human readable string describgn this connection.
+# parent -- parent in internal server tree, typically 'character'
+# atime -- time of activity from foreign client
+# ctime -- creation time of this connection.
    constructor {chanid clientaddress clientport} {
       my variable channel
       my variable address
@@ -34,6 +44,7 @@ oo::class create connection {
    destructor {
       my variable channel
       my variable tag
+      # make sure to clear event callabacks!
       fileevent $channel readable {}
       close $channel
       puts "$tag ! disconnected"
@@ -66,6 +77,7 @@ oo::class create connection {
          puts "$tag > $str"
       }
    }
+
    method readline {} {
    # Return line read from client
    my variable active
@@ -87,13 +99,16 @@ oo::class create connection {
          }
       } { return "" }
    }
+
    method newline {} {
    # triggered on readable input
    my variable parent
       $parent parse [self] [my readline]
    }
    export echo address port active tag settag export parent
+# end class definition: connection
 }
+
 package provide connection 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
 }

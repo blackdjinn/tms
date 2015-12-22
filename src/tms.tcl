@@ -1,6 +1,6 @@
 #!/usr/bin/tclsh
 # TMS -- Tcl MU Server
-# (C) Copyright 2014 Ryan Davis.
+# (C) Copyright 2014, 2015 Ryan Davis.
 # Released to Creative Commons. See 'Licence.txt'
 
 namespace eval config {
@@ -25,6 +25,7 @@ namespace eval config {
 #
 
 # Spammy safe interpreter debugging info.
+# Unless you are debugging the snadboxing, you DO NOT want this.
 if {$::config::debug >= 2} { ::safe::setLogCmd puts }
 
 # Set up path for library autoloading. Needed for 'package require'.
@@ -42,6 +43,7 @@ package require gameshell
 # Instantiate...
 set loginhandler [loginshell new]
 # TODO: These should be created/destroyed as needed or by startup scripts.
+# TODO: Right now they create globals.
 set chatroom [chatshell new]
 set game [gameshell new]
 
@@ -52,4 +54,8 @@ puts "loginobj: $loginhandler chatobj: $chatroom game: $game"
 set thisserver [server new $::config::port $loginhandler]
 
 # Start the event loop.
+# Run until something sets the global variable 'untilQuit'
 vwait untilQuit
+
+# Graceful exit code.
+# TODO: Actually write this.

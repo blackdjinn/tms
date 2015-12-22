@@ -4,13 +4,18 @@
 # Class definition for 'server' which contains the basic wrapping
 # for keeping a server port open and creating clients
 #
-# (C) 2014 Ryan Davis.
+# (C) 2014, 2015 Ryan Davis.
 #
 package require TclOO
 package require connection
 package require handler
 
 oo::class create server {
+# Varables:
+#   channel -- logical IO channel for the connection listener
+#   port -- local port being listened on
+#   active -- We still listening?
+#   login -- object we hook incoming connections to. instance of loginshell
    constructor {serverport connecthandler} {
    my variable channel
    my variable port
@@ -28,12 +33,15 @@ oo::class create server {
    }
 # Methods.
    method newconnect {chanid clientaddr clientport} {
+   # called from the 'new connection' event on the listener channel
    my variable login
       set incoming [connection new $chanid $clientaddr $clientport]
       $login newconnect $incoming
       return $incoming
    }
+#
 }
+
 package provide server 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
 }

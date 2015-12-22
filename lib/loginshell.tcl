@@ -4,7 +4,7 @@
 # This is the 'login' shell. It handles user validation, some basic
 # game-state queries and handing off to other shells.
 #
-# (C) 2014 Ryan Davis.
+# (C) 2014, 2015 Ryan Davis.
 #
 package require TclOO
 package require connection
@@ -13,25 +13,35 @@ package require handler
 
 oo::class create loginshell {
    superclass handler
+   # Constructor/Destructor/variables inherited
+
    method handoffChat {obj name} {
+   # Take the connection 'obj' and connect it to a chatshell using 'name'
+   #
    # TODO: this assumes implimentation details that will go away.
    # Eventually, chatrooms will be created dynamically and can be joined.
    global chatroom
       my remove $obj
       $chatroom connect $obj $name
    }
+
    method handoffGame {obj name} {
+   # Take the connection 'obj' and connect it to a gameshell using 'name'
+   #
    # TODO: this assumes implimentation details that will go away.
    # Eventually, multiple games may be run on the same server.
    global game
       my remove $obj
       $game connect $obj $name
    }
+
    method validateuser {type name pass} {
       # TODO stub, just returns 'true'
       return 1
    }
+
    method showhelp {obj} {
+   # display help on commands available in Login shell
       $obj echo "Help: Valid commands:"
       $obj echo "  help                     Print this message"
       $obj echo "  who                      List people connected"
@@ -40,16 +50,22 @@ oo::class create loginshell {
       $obj echo "  connect name password    join global game as 'name'"
       #$obj echo "  create name password     create account 'name' and connect"
    }
+
    method newconnect {obj} {
+   # Handle incoming connection to server.
+   # Displays help.
       next $obj
       my showhelp $obj
    }
+
    method parse {obj str} {
+   # Parse a line of user input.
       set firstword ""
       scan $str "%s" firstword
       switch -nocase $firstword {
          who {
-            # TODO: this only queries a single global chatroom. Change.
+            # TODO: this only queries the single global chatroom. Change.
+            # TODO; Should query game(s), etc.
             global chatroom
             $chatroom showwho $obj
          }
@@ -58,6 +74,7 @@ oo::class create loginshell {
             my disconnect $obj
          }
          chat {
+         # TODO: Multiple rooms... do it...
             set name ""
             set pass ""
             set connect ""
@@ -69,6 +86,8 @@ oo::class create loginshell {
             }
          }
          connect {
+         # TODO: Multiple games too... srsly.
+         # TODO: Also, games can have multiple contexts, so 'builder' 'player'
             set name ""
             set pass ""
             set connect ""
@@ -90,7 +109,9 @@ oo::class create loginshell {
          }
       }
    }
+# end class defnintion: loginshell
 }
+
 package provide loginshell 0
 if {[info ex argv0] && [file tail [info script]] == [file tail $argv0]} {
 }

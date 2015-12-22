@@ -1,9 +1,9 @@
 #!/bin/false
 # This shouldn't be invoked as a command, so it is set up to fail.
 #
-# Handlers for connections. It includes the basic communication logic.
+# 'shell' class for the chatroom shell.
 #
-# (C) 2014 Ryan Davis.
+# (C) 2014, 2015 Ryan Davis.
 #
 package require TclOO
 package require connection
@@ -11,10 +11,13 @@ package require handler
 package require character
 
 oo::class create chatchar {
+# TODO: flesh this out.
+# currently just uses the generic character class.
    superclass character
 }
 
 oo::class create chatshell {
+# Variables: all inherited.
    superclass handler
    method connect {con name} {
       my variable children
@@ -37,6 +40,7 @@ oo::class create chatshell {
          my newconnect [chatchar new $con $name]
       }
    }
+
    method connectinfo {} {
    my variable children
       set outlist {}
@@ -45,6 +49,7 @@ oo::class create chatshell {
       }
       return $outlist
    }
+   
    method showwho {obj} {
       set now [clock seconds]
       $obj echo [format "%-20s %-30s %-10s" Name: Connected: Idle: ]
@@ -56,6 +61,7 @@ puts [my connectinfo]
       }
       $obj echo "----- Done"
    }
+   
    method parse {obj str} {
       switch $str {
          WHO {
@@ -68,6 +74,7 @@ puts [my connectinfo]
          default { my broadcast "[$obj name] : $str" }
       }
    }
+# end class definition: chatshell
 }
 
 package provide chatshell 0
