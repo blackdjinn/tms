@@ -70,6 +70,42 @@ Each incoming line is handed to a sandboxed safe tcl interpreter.
 It impliments a simple REPL (Read Evaluate Print Loop) in the context of that interpreter.
 From this point, the expressive power of the Tcl language can be accessed.
 A handle to a private SQL data-store is also available, with a simple hierarchical store implimented on top of it.
+\chapter{Zones}
+``Zones'' are the system's way of defining space.
+This allows different semantics for each type of zone, the facilities to imliment new zone types to reflect different game needs, and the ability for administration of zones by game participants.
+Zones can have varying spatial relationships to other zones.
+\section{Zone Types}
+The following zone types exist on the server by default.
+Other types may be implimented locally.
+If you have something you think others might find useful, please sumbit your patch.
+It may be included in a future release.
+\subsection{SIMPLEROOM}
+NOT YET IMPLIMENTED
+
+This is a simple, presumably small, room.
+The semantics are based on the standard Tiny room.
+Everyone is considered 'nearby' for the purposes of say/pose.
+There is no differentiation of space within the room, one is simply present or not.
+Exits may be defined which allow movement to other zones.
+
+This is the simplest zone type.
+Hisotrically, entire worlds have been simulated using this type of zone.
+This practice is depricated, but this model still has uses for admin or private RP spaces, so it is included.
+\subsection{GRID}
+NOT YET IMPLIMENTED
+
+This represents the sort of street map encountered in many American cities.
+\subsection{GRAPH}
+NOT YET IMPLIMENTED
+
+This represents a space that is arbitrarily partitioned and connected.
+A typical Tiny-style home is an example of this, with each `room' being a partition and the exits connecting them being the edges of the graph.
+\subsection{ALGORITHMIC}
+NOT YET IMPLIMENTED
+
+This represents a potentially infinite space with connectivity and contents generated algorhytcmically.
+A Traveller star-map might be an example.
+
 \backmatter
 \part{Appendix}
 \chapter{License and Legalese}
