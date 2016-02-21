@@ -25,7 +25,7 @@ namespace eval config {
 #
 
 # Spammy safe interpreter debugging info.
-# Unless you are debugging the snadboxing, you DO NOT want this.
+# Unless you are debugging the sandboxing, you DO NOT want this.
 if {$::config::debug >= 2} { ::safe::setLogCmd puts }
 
 # Set up path for library autoloading. Needed for 'package require'.
