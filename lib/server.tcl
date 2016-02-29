@@ -9,6 +9,8 @@
 package require TclOO
 package require connection
 package require handler
+package require tdbc
+package require tdbc::postgres
 
 oo::class create server {
 # Varables:

@@ -10,10 +10,23 @@ package require TclOO
 package require connection
 package require chatshell
 package require handler
+package require md5crypt
 
 oo::class create loginshell {
    superclass handler
-   # Constructor/Destructor/variables inherited
+# Variables:
+#   db -- Connection to database
+#   passquery -- prepared query to fetch password
+   constructor {} {
+   my variable db
+   my variable passquery
+      set db [::tdbc::postgres::connection new -user tms -password tms -db tms]
+      set passquery [$db prepare {select md5pass from "Users" where "Name" = :username}]
+   }
+   destructor {
+      my variable db
+      $db close
+   }
 
    method handoffChat {obj name} {
    # Take the connection 'obj' and connect it to a chatshell using 'name'
@@ -36,8 +49,23 @@ oo::class create loginshell {
    }
 
    method validateuser {type name pass} {
-      # TODO stub, just returns 'true'
-      return 1
+   # Check to be sure there is a record for the user and that the passwords match.
+   my variable passquery   
+      set username $name
+      set results [$passquery execute]
+      if {[$results rowcount]==1} {
+         puts "Got a row"
+         set md5pass [lindex [$results allrows] 0 1]
+         if {[string equal $md5pass [::md5crypt::aprcrypt $pass $md5pass]]} {
+            puts "Passwords matched"
+            return 1
+         } {
+            puts "Bad password"
+            return 0
+      } {
+         puts "Username invalid"
+         return 0
+      }
    }
 
    method showhelp {obj} {
