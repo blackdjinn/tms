@@ -1,7 +1,7 @@
 #!/bin/false
 # This shouldn't be invoked as a command, so it is set up to fail.
 #
-# This is the shell for anything connecte to the game as a character.
+# This is the shell for anything connected to the game as a character.
 # It includes the specialized class for a character connected to this game.
 #
 # (C) 2014, 2015 Ryan Davis.
@@ -82,7 +82,7 @@ oo::class create gameshell {
 
    method showwho {obj} {
    # Human readable connection information.
-   # Information is done using by calling the 'echo' method on obj
+   # Information is sent by calling the 'echo' method on obj
    # for each line.
       set now [clock seconds]
       $obj echo [format "%-20s %-30s %-10s" Name: Connected: Idle: ]
@@ -108,7 +108,7 @@ oo::class create gameshell {
          $obj echo "----"
       }
    }
-# end class doefinition: gameshell
+# end class definition: gameshell
 }
 
 package provide gameshell 0

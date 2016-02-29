@@ -50,7 +50,7 @@ oo::class create handler {
    }
 
    method parse {obj str} {
-      # Stub implimentation, just echos.
+      # Stub implementation, just echos.
       $obj echo $str
    }
 

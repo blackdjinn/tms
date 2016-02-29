@@ -44,7 +44,7 @@ oo::class create connection {
    destructor {
       my variable channel
       my variable tag
-      # make sure to clear event callabacks!
+      # make sure to clear event callbacks!
       fileevent $channel readable {}
       close $channel
       puts "$tag ! disconnected"

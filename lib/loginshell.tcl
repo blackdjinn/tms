@@ -31,7 +31,7 @@ oo::class create loginshell {
    method handoffChat {obj name} {
    # Take the connection 'obj' and connect it to a chatshell using 'name'
    #
-   # TODO: this assumes implimentation details that will go away.
+   # TODO: this assumes implementation details that will go away.
    # Eventually, chatrooms will be created dynamically and can be joined.
    global chatroom
       my remove $obj
@@ -41,7 +41,7 @@ oo::class create loginshell {
    method handoffGame {obj name} {
    # Take the connection 'obj' and connect it to a gameshell using 'name'
    #
-   # TODO: this assumes implimentation details that will go away.
+   # TODO: this assumes implementation details that will go away.
    # Eventually, multiple games may be run on the same server.
    global game
       my remove $obj
@@ -138,7 +138,7 @@ oo::class create loginshell {
          }
       }
    }
-# end class defnintion: loginshell
+# end class defninition: loginshell
 }
 
 package provide loginshell 0

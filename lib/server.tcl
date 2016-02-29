@@ -13,7 +13,7 @@ package require tdbc
 package require tdbc::postgres
 
 oo::class create server {
-# Varables:
+# Variables:
 #   channel -- logical IO channel for the connection listener
 #   port -- local port being listened on
 #   active -- We still listening?
