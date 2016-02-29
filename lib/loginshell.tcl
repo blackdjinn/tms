@@ -62,6 +62,7 @@ oo::class create loginshell {
          } {
             puts "Bad password"
             return 0
+         }
       } {
          puts "Username invalid"
          return 0
